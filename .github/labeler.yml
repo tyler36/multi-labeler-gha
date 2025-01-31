@@ -1,0 +1,45 @@
+version: v1
+
+labels:
+  - label: 'bugfix'
+    sync: true
+    matcher:
+      title: '^fix(|!): .+'
+      commits: '^fix:.*'
+  - label: 'breaking'
+    sync: true
+    matcher:
+      title: '^[a-z]+!: .+'
+  - label: 'documentation'
+    sync: true
+    matcher:
+      title: '^docs(|!): .+'
+  - label: 'dependencies'
+    sync: true
+    matcher:
+      files:
+        any:
+          - "composer.lock"
+          - "package.lock"
+  - label: 'enhancement'
+    sync: true
+    matcher:
+      title: '^feat(|!): .+'
+      commits: '^feat:.*'
+  - label: 'localization'
+    sync: true
+    matcher:
+      title: '/locale'
+      commits: '/locale'
+
+checks:
+  - context: "Semantic Pull Request"
+    url: "https://ddev.readthedocs.io/en/latest/developers/building-contributing/#pull-request-title-guidelines"
+    description:
+      success: Ready for review.
+      failure: Missing semantic label.
+    labels:
+      any:
+        - bugfix
+        - documentation
+        - enhancement

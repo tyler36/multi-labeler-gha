@@ -1,0 +1,27 @@
+name: chore
+
+on:
+  issues:
+  pull_request:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  labeler:
+    name: '🤖 multi-labeler'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # the config file
+      pull-requests: write # for labeling pull requests (on: pull_request_target or on: pull_request)
+      issues: write # for labeling issues (on: issues)
+      statuses: write # to generate status
+      checks: write # to generate status
+    steps:
+      - uses: fuxingloh/multi-labeler@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config-path: .github/labeler.yml # optional, default to '.github/labeler.yml'
